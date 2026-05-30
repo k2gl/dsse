@@ -1,0 +1,57 @@
+{
+  "name": "k2gl/dsse",
+  "description": "Faithful, zero-dependency PHP implementation of DSSE (Dead Simple Signing Envelope): PAE encoding, envelope (de)serialization, and pluggable signers/verifiers.",
+  "homepage": "https://github.com/k2gl/dsse",
+  "type": "library",
+  "license": "MIT",
+  "keywords": [
+    "dsse",
+    "signing",
+    "signature",
+    "envelope",
+    "pae",
+    "in-toto",
+    "sigstore",
+    "slsa",
+    "attestation",
+    "supply-chain",
+    "ecdsa",
+    "ed25519"
+  ],
+  "authors": [
+    {
+      "name": "Nickolay Harin",
+      "email": "l0gic@ya.ru"
+    }
+  ],
+  "require": {
+    "php": ">=8.1"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^10|^11|^12",
+    "phpstan/phpstan": "^2.1",
+    "friendsofphp/php-cs-fixer": "^3.64",
+    "k2gl/phpunit-fluent-assertions": "^12"
+  },
+  "suggest": {
+    "ext-openssl": "Required by EcdsaP256Signer / EcdsaP256Verifier (ECDSA P-256).",
+    "ext-sodium": "Required by Ed25519Signer / Ed25519Verifier (Ed25519)."
+  },
+  "autoload": {
+    "psr-4": {
+      "K2gl\\Dsse\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "K2gl\\Dsse\\Tests\\": "tests/"
+    }
+  },
+  "minimum-stability": "stable",
+  "scripts": {
+    "test": "phpunit",
+    "phpstan": "phpstan analyse",
+    "cs": "php-cs-fixer fix --dry-run --diff",
+    "cs-fix": "php-cs-fixer fix"
+  }
+}
