@@ -40,6 +40,39 @@ final class EcdsaP256Test extends TestCase
         fact(strlen($envelope->signatures[0]->sig))->is(64);
     }
 
+    public function testVerifiesNativeDerSignature(): void
+    {
+        [$privatePem, $publicPem] = $this->generateKeyPair();
+        $verifier = EcdsaP256Verifier::fromPem($publicPem);
+
+        $privateKey = openssl_pkey_get_private($privatePem);
+        self::assertNotFalse($privateKey);
+        // openssl_sign emits ASN.1 DER natively, the same encoding Sigstore carries.
+        $der = '';
+        self::assertNotFalse(openssl_sign('the PAE bytes', $der, $privateKey, OPENSSL_ALGO_SHA256));
+
+        fact($verifier->verify('the PAE bytes', $der))->true();
+        fact($verifier->verify('other bytes', $der))->false();
+    }
+
+    public function testVerifiesDsseEnvelopeWithDerSignature(): void
+    {
+        [$privatePem, $publicPem] = $this->generateKeyPair();
+        $verifier = EcdsaP256Verifier::fromPem($publicPem);
+
+        $payload = 'the payload';
+        $payloadType = 'application/vnd.test+json';
+
+        $privateKey = openssl_pkey_get_private($privatePem);
+        self::assertNotFalse($privateKey);
+        $der = '';
+        self::assertNotFalse(openssl_sign(Pae::encode($payloadType, $payload), $der, $privateKey, OPENSSL_ALGO_SHA256));
+
+        $envelope = new Envelope($payload, $payloadType, [new Signature($der, null)]);
+
+        fact($envelope->verify($verifier))->is($payload);
+    }
+
     public function testTamperedPayloadDoesNotVerify(): void
     {
         [$privatePem, $publicPem] = $this->generateKeyPair();

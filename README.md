@@ -103,7 +103,9 @@ final class KmsSigner implements Signer
   delegated to `Signer` / `Verifier`, so you control the algorithm and key storage.
 - **Raw signatures.** The bundled ECDSA P-256 signer emits 64-byte `r||s` signatures
   (the form DSSE/JOSE/WebCrypto/Sigstore use), converting to and from OpenSSL's DER
-  internally.
+  internally. The verifier accepts both raw `r||s` and ASN.1 DER signatures,
+  detecting the encoding automatically — so DER signatures (OpenSSL native, Sigstore
+  bundles) verify without any extra wiring.
 - **Strict and typed.** `declare(strict_types=1)` throughout, analysed at PHPStan
   level 9; every exception implements `DsseException`.
 

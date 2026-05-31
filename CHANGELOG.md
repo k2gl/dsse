@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.0
+
+- **`EcdsaP256Verifier` now accepts ASN.1 DER signatures** in addition to raw
+  `r||s`, detecting the encoding automatically. DSSE envelopes whose ECDSA P-256
+  signatures are DER — the form OpenSSL emits and Sigstore bundles carry — now
+  verify out of the box, with no custom verifier. Backward compatible: raw `r||s`
+  signatures keep verifying exactly as before.
+
 ## 1.0.0
 
 First public release. A faithful, zero-dependency implementation of DSSE
