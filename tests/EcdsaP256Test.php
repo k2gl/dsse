@@ -46,10 +46,10 @@ final class EcdsaP256Test extends TestCase
         $verifier = EcdsaP256Verifier::fromPem($publicPem);
 
         $privateKey = openssl_pkey_get_private($privatePem);
-        self::assertNotFalse($privateKey);
+        fact($privateKey)->notFalse();
         // openssl_sign emits ASN.1 DER natively, the same encoding Sigstore carries.
         $der = '';
-        self::assertNotFalse(openssl_sign('the PAE bytes', $der, $privateKey, OPENSSL_ALGO_SHA256));
+        fact(openssl_sign('the PAE bytes', $der, $privateKey, OPENSSL_ALGO_SHA256))->notFalse();
 
         fact($verifier->verify('the PAE bytes', $der))->true();
         fact($verifier->verify('other bytes', $der))->false();
@@ -64,9 +64,9 @@ final class EcdsaP256Test extends TestCase
         $payloadType = 'application/vnd.test+json';
 
         $privateKey = openssl_pkey_get_private($privatePem);
-        self::assertNotFalse($privateKey);
+        fact($privateKey)->notFalse();
         $der = '';
-        self::assertNotFalse(openssl_sign(Pae::encode($payloadType, $payload), $der, $privateKey, OPENSSL_ALGO_SHA256));
+        fact(openssl_sign(Pae::encode($payloadType, $payload), $der, $privateKey, OPENSSL_ALGO_SHA256))->notFalse();
 
         $envelope = new Envelope($payload, $payloadType, [new Signature($der, null)]);
 
@@ -99,10 +99,10 @@ final class EcdsaP256Test extends TestCase
             'private_key_type' => OPENSSL_KEYTYPE_EC,
             'curve_name' => 'prime256v1',
         ]);
-        self::assertNotFalse($key);
+        fact($key)->notFalse();
         openssl_pkey_export($key, $privatePem);
         $details = openssl_pkey_get_details($key);
-        self::assertNotFalse($details);
+        fact($details)->notFalse();
 
         return [(string) $privatePem, (string) $details['key']];
     }
