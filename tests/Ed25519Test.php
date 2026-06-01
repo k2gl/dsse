@@ -11,11 +11,10 @@ use K2gl\Dsse\Exception\CryptoException;
 use K2gl\Dsse\Exception\SignatureVerificationFailed;
 use K2gl\Dsse\Pae;
 use K2gl\Dsse\Signature;
-
-use function K2gl\PHPUnitFluentAssertions\fact;
-
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+
+use function K2gl\PHPUnitFluentAssertions\fact;
 
 #[CoversClass(Ed25519Signer::class)]
 #[CoversClass(Ed25519Verifier::class)]

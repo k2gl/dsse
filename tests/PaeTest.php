@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace K2gl\Dsse\Tests;
 
 use K2gl\Dsse\Pae;
-
-use function K2gl\PHPUnitFluentAssertions\fact;
-
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+
+use function K2gl\PHPUnitFluentAssertions\fact;
 
 #[CoversClass(Pae::class)]
 final class PaeTest extends TestCase

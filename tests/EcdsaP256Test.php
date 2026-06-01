@@ -12,11 +12,10 @@ use K2gl\Dsse\Exception\SignatureVerificationFailed;
 use K2gl\Dsse\Internal\Asn1EcdsaSignature;
 use K2gl\Dsse\Pae;
 use K2gl\Dsse\Signature;
-
-use function K2gl\PHPUnitFluentAssertions\fact;
-
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+
+use function K2gl\PHPUnitFluentAssertions\fact;
 
 #[CoversClass(EcdsaP256Signer::class)]
 #[CoversClass(EcdsaP256Verifier::class)]

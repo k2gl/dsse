@@ -29,6 +29,7 @@ final class Ed25519Verifier implements Verifier
         if (strlen($signature) !== SODIUM_CRYPTO_SIGN_BYTES) {
             return false;
         }
+
         return sodium_crypto_sign_verify_detached($signature, $message, $this->publicKey);
     }
 }

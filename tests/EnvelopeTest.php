@@ -11,11 +11,10 @@ use K2gl\Dsse\Pae;
 use K2gl\Dsse\Signature;
 use K2gl\Dsse\Signer;
 use K2gl\Dsse\Verifier;
-
-use function K2gl\PHPUnitFluentAssertions\fact;
-
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+
+use function K2gl\PHPUnitFluentAssertions\fact;
 
 #[CoversClass(Envelope::class)]
 #[CoversClass(Signature::class)]
@@ -74,9 +73,7 @@ final class EnvelopeTest extends TestCase
     private function fakeSigner(?string $keyId): Signer
     {
         return new class ($keyId) implements Signer {
-            public function __construct(private readonly ?string $keyId)
-            {
-            }
+            public function __construct(private readonly ?string $keyId) {}
 
             public function sign(string $message): string
             {

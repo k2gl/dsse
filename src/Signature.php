@@ -14,6 +14,5 @@ final class Signature
     public function __construct(
         public readonly string $sig,
         public readonly ?string $keyId = null,
-    ) {
-    }
+    ) {}
 }

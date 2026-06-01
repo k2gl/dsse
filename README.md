@@ -1,5 +1,11 @@
 # k2gl/dsse
 
+[![CI](https://img.shields.io/github/actions/workflow/status/k2gl/dsse/ci.yml?branch=main&label=CI&logo=github)](https://github.com/k2gl/dsse/actions/workflows/ci.yml)
+[![Latest Stable Version](https://img.shields.io/packagist/v/k2gl/dsse?logo=packagist&logoColor=white)](https://packagist.org/packages/k2gl/dsse)
+[![Total Downloads](https://img.shields.io/packagist/dt/k2gl/dsse?logo=packagist&logoColor=white)](https://packagist.org/packages/k2gl/dsse)
+[![PHPStan Level](https://img.shields.io/badge/PHPStan-level%209-2a5ea7?logo=php&logoColor=white)](https://phpstan.org)
+[![License](https://img.shields.io/packagist/l/k2gl/dsse?color=yellowgreen)](https://packagist.org/packages/k2gl/dsse)
+
 A faithful, zero-dependency PHP implementation of **DSSE** — the
 [Dead Simple Signing Envelope](https://github.com/secure-systems-lab/dsse) used by
 Sigstore, in-toto, SLSA and npm provenance to sign and verify arbitrary payloads.
