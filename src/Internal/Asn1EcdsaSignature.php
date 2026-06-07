@@ -116,7 +116,7 @@ final class Asn1EcdsaSignature
     private static function encodeLength(int $length): string
     {
         if ($length < 0x80) {
-            return chr($length);
+            return chr($length & 0xff);
         }
         $bytes = '';
         while ($length > 0) {
@@ -124,6 +124,6 @@ final class Asn1EcdsaSignature
             $length >>= 8;
         }
 
-        return chr(0x80 | strlen($bytes)) . $bytes;
+        return chr((0x80 | strlen($bytes)) & 0xff) . $bytes;
     }
 }
