@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.1
+
+- DER length decoding is now static-analysis clean on PHP 8.5 — no behaviour
+  change.
+- Development tooling (`pint.json`) is excluded from the distribution archive.
+- Release tarballs are now published as GitHub release assets together with
+  their Sigstore attestation bundle, signed via GitHub Artifact Attestations.
+
 ## 1.1.0
 
 - **`EcdsaP256Verifier` now accepts ASN.1 DER signatures** in addition to raw
