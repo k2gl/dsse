@@ -16,7 +16,7 @@ It gives you the three pieces of the spec and nothing else:
 - **Envelope** — the JSON envelope (`payload` / `payloadType` / `signatures`) with
   lossless (de)serialization.
 - **Signer / Verifier** — tiny interfaces so you can plug in any key (or a remote
-  KMS/HSM). ECDSA P-256 and Ed25519 implementations are included.
+  KMS/HSM). ECDSA (P-256/384/521), Ed25519, and RSA (PKCS#1 v1.5) implementations are included.
 
 ## Install
 
@@ -24,7 +24,7 @@ It gives you the three pieces of the spec and nothing else:
 composer require k2gl/dsse
 ```
 
-Requires PHP 8.1+. The bundled signers use `ext-openssl` (ECDSA P-256) and
+Requires PHP 8.1+. The bundled signers use `ext-openssl` (ECDSA P-256/384/521, RSA) and
 `ext-sodium` (Ed25519); both ship with PHP by default. The core (`Pae`, `Envelope`)
 needs neither.
 
@@ -89,6 +89,26 @@ $signer   = new Ed25519Signer(sodium_crypto_sign_secretkey($keypair), 'ed-1');
 $verifier = new Ed25519Verifier(sodium_crypto_sign_publickey($keypair));
 ```
 
+### ECDSA P-384 / P-521 and RSA
+
+The other bundled algorithms follow the same `fromPem()` pattern:
+
+```php
+use K2gl\Dsse\EcdsaP384Signer;
+use K2gl\Dsse\EcdsaP384Verifier;
+use K2gl\Dsse\RsaSigner;
+use K2gl\Dsse\RsaVerifier;
+
+$signer   = EcdsaP384Signer::fromPem($p384PrivateKeyPem);
+$verifier = EcdsaP384Verifier::fromPem($p384PublicKeyPem);
+
+// RSASSA-PKCS1-v1_5; hash algorithm defaults to sha256 (sha384/sha512 also supported)
+$rsaSigner   = RsaSigner::fromPem($rsaPrivateKeyPem, hashAlgorithm: 'sha512');
+$rsaVerifier = RsaVerifier::fromPem($rsaPublicKeyPem, hashAlgorithm: 'sha512');
+```
+
+`EcdsaP521Signer` / `EcdsaP521Verifier` work identically.
+
 ### Plugging in your own key backend
 
 Implement two methods to sign with a KMS/HSM or any other scheme:
@@ -107,7 +127,7 @@ final class KmsSigner implements Signer
 
 - **Crypto-agnostic core.** `Pae` and `Envelope` carry no cryptography; signing is
   delegated to `Signer` / `Verifier`, so you control the algorithm and key storage.
-- **Raw signatures.** The bundled ECDSA P-256 signer emits 64-byte `r||s` signatures
+- **Raw signatures.** The bundled ECDSA signers emit raw `r||s` signatures (64/96/132 bytes for P-256/384/521)
   (the form DSSE/JOSE/WebCrypto/Sigstore use), converting to and from OpenSSL's DER
   internally. The verifier accepts both raw `r||s` and ASN.1 DER signatures,
   detecting the encoding automatically — so DER signatures (OpenSSL native, Sigstore

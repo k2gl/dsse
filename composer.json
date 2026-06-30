@@ -38,7 +38,7 @@
     "k2gl/phpunit-fluent-assertions": "^12"
   },
   "suggest": {
-    "ext-openssl": "Required by EcdsaP256Signer / EcdsaP256Verifier (ECDSA P-256).",
+    "ext-openssl": "Required by the ECDSA (P-256/384/521) and RSA (PKCS#1 v1.5) signers/verifiers.",
     "ext-sodium": "Required by Ed25519Signer / Ed25519Verifier (Ed25519)."
   },
   "autoload": {

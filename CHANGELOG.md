@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.0
+
+- Add more signature algorithms alongside ECDSA P-256 and Ed25519:
+  `EcdsaP384Signer`/`EcdsaP384Verifier` and `EcdsaP521Signer`/`EcdsaP521Verifier`
+  (raw `r||s`, with automatic ASN.1 DER acceptance), plus `RsaSigner`/`RsaVerifier`
+  (RSASSA-PKCS1-v1_5 over SHA-256/384/512). No new dependencies — the new signers
+  use `ext-openssl`, like the existing ECDSA one.
+
 ## 1.1.1
 
 - DER length decoding is now static-analysis clean on PHP 8.5 — no behaviour
