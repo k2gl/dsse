@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.3.0
+
+- Add `PublicKey::fromPem()` and `PublicKey::fromJwk()` — load a public key and get the
+  matching `Verifier` back, with the algorithm and curve detected automatically (RSA,
+  ECDSA P-256/384/521, Ed25519). Useful for keys from a PEM file or a JWKS endpoint,
+  where the type isn't known up front. RSA defaults to SHA-256.
+- Add `KeyId::sha256Spki()` (hex SHA-256 of the DER public key — the cosign/Sigstore
+  fingerprint) and `KeyId::jwkThumbprint()` (RFC 7638), for the `Signature` keyId field.
+- No new dependencies — the loader uses `ext-openssl` and `ext-sodium`, like the existing
+  signers.
+
 ## 1.2.0
 
 - Add more signature algorithms alongside ECDSA P-256 and Ed25519:
