@@ -6,9 +6,8 @@
 [![PHPStan Level](https://img.shields.io/badge/PHPStan-level%209-2a5ea7?logo=php&logoColor=white)](https://phpstan.org)
 [![License](https://img.shields.io/packagist/l/k2gl/dsse?color=yellowgreen)](https://packagist.org/packages/k2gl/dsse)
 
-A faithful, zero-dependency PHP implementation of **DSSE** — the
-[Dead Simple Signing Envelope](https://github.com/secure-systems-lab/dsse) used by
-Sigstore, in-toto, SLSA and npm provenance to sign and verify arbitrary payloads.
+Sign and verify DSSE (Dead Simple Signing Envelope) payloads in PHP with pluggable keys.
+It's the envelope Sigstore, in-toto, SLSA and npm provenance use to wrap a signed payload.
 
 It gives you the three pieces of the spec and nothing else:
 
