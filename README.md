@@ -108,6 +108,33 @@ $rsaVerifier = RsaVerifier::fromPem($rsaPublicKeyPem, hashAlgorithm: 'sha512');
 
 `EcdsaP521Signer` / `EcdsaP521Verifier` work identically.
 
+### Loading a key without knowing its algorithm
+
+When a key arrives as a PEM file or a JWK from a JWKS endpoint, `PublicKey` picks the
+right verifier for you — RSA, ECDSA (P-256/384/521) or Ed25519 — so you don't have to
+branch on the algorithm yourself:
+
+```php
+use K2gl\Dsse\PublicKey;
+
+$verifier = PublicKey::fromPem($publicKeyPem); // detects the algorithm and curve
+$verifier = PublicKey::fromJwk($jwk);          // EC / RSA / OKP (Ed25519)
+
+$payload = $envelope->verify($verifier);
+```
+
+RSA keys carry no hash, so these verify with SHA-256; for another hash use
+`RsaVerifier::fromPem($pem, hashAlgorithm: 'sha512')` directly.
+
+`KeyId` computes the two identifiers commonly used for a signature's `keyId`:
+
+```php
+use K2gl\Dsse\KeyId;
+
+KeyId::sha256Spki($publicKeyPem); // hex SHA-256 of the DER key (cosign / Sigstore style)
+KeyId::jwkThumbprint($jwk);       // RFC 7638 base64url thumbprint
+```
+
 ### Plugging in your own key backend
 
 Implement two methods to sign with a KMS/HSM or any other scheme:
