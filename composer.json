@@ -1,6 +1,6 @@
 {
   "name": "k2gl/dsse",
-  "description": "Faithful, zero-dependency PHP implementation of DSSE (Dead Simple Signing Envelope): PAE encoding, envelope (de)serialization, and pluggable signers/verifiers.",
+  "description": "Sign and verify DSSE (Dead Simple Signing Envelope) payloads in PHP, with pluggable keys.",
   "homepage": "https://github.com/k2gl/dsse",
   "type": "library",
   "license": "MIT",
