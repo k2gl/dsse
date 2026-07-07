@@ -1,6 +1,6 @@
 {
   "name": "k2gl/dsse",
-  "description": "Sign and verify DSSE (Dead Simple Signing Envelope) payloads in PHP, with pluggable keys.",
+  "description": "Sign and verify DSSE (Dead Simple Signing Envelope) payloads in PHP, with pluggable keys",
   "homepage": "https://github.com/k2gl/dsse",
   "type": "library",
   "license": "MIT",
