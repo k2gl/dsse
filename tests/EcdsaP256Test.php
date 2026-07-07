@@ -74,6 +74,7 @@ final class EcdsaP256Test extends TestCase
 
     public function testTamperedPayloadDoesNotVerify(): void
     {
+        // arrange
         [$privatePem, $publicPem] = $this->generateKeyPair();
         $signer = EcdsaP256Signer::fromPem($privatePem);
         $verifier = EcdsaP256Verifier::fromPem($publicPem);
@@ -81,14 +82,14 @@ final class EcdsaP256Test extends TestCase
         $envelope = Envelope::sign('the payload', 'application/vnd.test+json', $signer);
         $tampered = new Envelope('the PAYLOAD', $envelope->payloadType, $envelope->signatures);
 
-        $this->expectException(SignatureVerificationFailed::class);
-        $tampered->verify($verifier);
+        // act + assert
+        fact(static fn () => $tampered->verify($verifier))->throws(SignatureVerificationFailed::class);
     }
 
     public function testRejectsInvalidPrivateKey(): void
     {
-        $this->expectException(CryptoException::class);
-        EcdsaP256Signer::fromPem('not a valid pem');
+        // act + assert
+        fact(static fn () => EcdsaP256Signer::fromPem('not a valid pem'))->throws(CryptoException::class);
     }
 
     /** @return array{0: string, 1: string} */

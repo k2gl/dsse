@@ -54,9 +54,8 @@ final class KeyIdTest extends TestCase
 
     public function testJwkThumbprintRejectsUnsupportedKeyType(): void
     {
-        $this->expectException(CryptoException::class);
-
-        KeyId::jwkThumbprint(['kty' => 'oct', 'k' => 'AAAA']);
+        // act + assert
+        fact(static fn () => KeyId::jwkThumbprint(['kty' => 'oct', 'k' => 'AAAA']))->throws(CryptoException::class);
     }
 
     private static function base64Url(string $bytes): string

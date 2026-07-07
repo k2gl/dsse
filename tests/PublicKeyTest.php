@@ -113,23 +113,21 @@ final class PublicKeyTest extends TestCase
 
     public function testFromPemRejectsGarbage(): void
     {
-        $this->expectException(CryptoException::class);
-
-        PublicKey::fromPem('definitely not a key');
+        // act + assert
+        fact(static fn () => PublicKey::fromPem('definitely not a key'))->throws(CryptoException::class);
     }
 
     public function testFromJwkRejectsUnsupportedKeyType(): void
     {
-        $this->expectException(CryptoException::class);
-
-        PublicKey::fromJwk(['kty' => 'oct', 'k' => 'AAAA']);
+        // act + assert
+        fact(static fn () => PublicKey::fromJwk(['kty' => 'oct', 'k' => 'AAAA']))->throws(CryptoException::class);
     }
 
     public function testFromJwkRejectsMissingMember(): void
     {
-        $this->expectException(CryptoException::class);
-
-        PublicKey::fromJwk(['kty' => 'RSA', 'e' => 'AQAB']); // modulus missing
+        // modulus missing
+        // act + assert
+        fact(static fn () => PublicKey::fromJwk(['kty' => 'RSA', 'e' => 'AQAB']))->throws(CryptoException::class);
     }
 
     /**
