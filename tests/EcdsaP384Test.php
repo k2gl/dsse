@@ -46,18 +46,20 @@ final class EcdsaP384Test extends TestCase
 
     public function testTamperedPayloadDoesNotVerify(): void
     {
+        // arrange
         [$privatePem, $publicPem] = $this->generateKeyPair();
         $envelope = Envelope::sign('the payload', 'application/vnd.test+json', EcdsaP384Signer::fromPem($privatePem));
         $tampered = new Envelope('the PAYLOAD', $envelope->payloadType, $envelope->signatures);
 
-        $this->expectException(SignatureVerificationFailed::class);
-        $tampered->verify(EcdsaP384Verifier::fromPem($publicPem));
+        // act + assert
+        fact(static fn () => $tampered->verify(EcdsaP384Verifier::fromPem($publicPem)))
+            ->throws(SignatureVerificationFailed::class);
     }
 
     public function testRejectsInvalidPrivateKey(): void
     {
-        $this->expectException(CryptoException::class);
-        EcdsaP384Signer::fromPem('not a valid pem');
+        // act + assert
+        fact(static fn () => EcdsaP384Signer::fromPem('not a valid pem'))->throws(CryptoException::class);
     }
 
     /** @return array{0: string, 1: string} */

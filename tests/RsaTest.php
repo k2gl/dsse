@@ -38,36 +38,40 @@ final class RsaTest extends TestCase
 
     public function testHashAlgorithmMismatchDoesNotVerify(): void
     {
+        // arrange
         [$privatePem, $publicPem] = $this->generateKeyPair();
         $envelope = Envelope::sign('the payload', 'application/vnd.test+json', RsaSigner::fromPem($privatePem, null, 'sha256'));
 
         // Verifier configured for a different hash must reject.
-        $this->expectException(SignatureVerificationFailed::class);
-        $envelope->verify(RsaVerifier::fromPem($publicPem, 'sha512'));
+        // act + assert
+        fact(static fn () => $envelope->verify(RsaVerifier::fromPem($publicPem, 'sha512')))
+            ->throws(SignatureVerificationFailed::class);
     }
 
     public function testTamperedPayloadDoesNotVerify(): void
     {
+        // arrange
         [$privatePem, $publicPem] = $this->generateKeyPair();
         $envelope = Envelope::sign('the payload', 'application/vnd.test+json', RsaSigner::fromPem($privatePem));
         $tampered = new Envelope('the PAYLOAD', $envelope->payloadType, $envelope->signatures);
 
-        $this->expectException(SignatureVerificationFailed::class);
-        $tampered->verify(RsaVerifier::fromPem($publicPem));
+        // act + assert
+        fact(static fn () => $tampered->verify(RsaVerifier::fromPem($publicPem)))->throws(SignatureVerificationFailed::class);
     }
 
     public function testRejectsUnsupportedHashAlgorithm(): void
     {
+        // arrange
         [$privatePem] = $this->generateKeyPair();
 
-        $this->expectException(CryptoException::class);
-        RsaSigner::fromPem($privatePem, null, 'md5');
+        // act + assert
+        fact(static fn () => RsaSigner::fromPem($privatePem, null, 'md5'))->throws(CryptoException::class);
     }
 
     public function testRejectsInvalidPrivateKey(): void
     {
-        $this->expectException(CryptoException::class);
-        RsaSigner::fromPem('not a valid pem');
+        // act + assert
+        fact(static fn () => RsaSigner::fromPem('not a valid pem'))->throws(CryptoException::class);
     }
 
     /** @return array{0: string, 1: string} */

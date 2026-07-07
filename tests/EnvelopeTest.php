@@ -46,6 +46,7 @@ final class EnvelopeTest extends TestCase
 
     public function testVerifyFailsWhenNoSignatureMatches(): void
     {
+        // arrange
         $envelope = Envelope::sign('hello world', 'application/vnd.test', $this->fakeSigner(null));
         $rejecting = new class () implements Verifier {
             public function verify(string $message, string $signature): bool
@@ -54,20 +55,21 @@ final class EnvelopeTest extends TestCase
             }
         };
 
-        $this->expectException(SignatureVerificationFailed::class);
-        $envelope->verify($rejecting);
+        // act + assert
+        fact(static fn () => $envelope->verify($rejecting))->throws(SignatureVerificationFailed::class);
     }
 
     public function testRejectsMalformedJson(): void
     {
-        $this->expectException(InvalidEnvelopeException::class);
-        Envelope::fromJson('{not json');
+        // act + assert
+        fact(static fn () => Envelope::fromJson('{not json'))->throws(InvalidEnvelopeException::class);
     }
 
     public function testRejectsMissingPayloadType(): void
     {
-        $this->expectException(InvalidEnvelopeException::class);
-        Envelope::fromJson('{"payload":"aGk=","signatures":[{"sig":"YQ=="}]}');
+        // act + assert
+        fact(static fn () => Envelope::fromJson('{"payload":"aGk=","signatures":[{"sig":"YQ=="}]}'))
+            ->throws(InvalidEnvelopeException::class);
     }
 
     private function fakeSigner(?string $keyId): Signer

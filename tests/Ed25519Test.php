@@ -38,6 +38,7 @@ final class Ed25519Test extends TestCase
 
     public function testTamperedPayloadDoesNotVerify(): void
     {
+        // arrange
         $keypair = sodium_crypto_sign_keypair();
         $signer = new Ed25519Signer(sodium_crypto_sign_secretkey($keypair));
         $verifier = new Ed25519Verifier(sodium_crypto_sign_publickey($keypair));
@@ -45,13 +46,13 @@ final class Ed25519Test extends TestCase
         $envelope = Envelope::sign('the payload', 'application/vnd.test+json', $signer);
         $tampered = new Envelope('the PAYLOAD', $envelope->payloadType, $envelope->signatures);
 
-        $this->expectException(SignatureVerificationFailed::class);
-        $tampered->verify($verifier);
+        // act + assert
+        fact(static fn () => $tampered->verify($verifier))->throws(SignatureVerificationFailed::class);
     }
 
     public function testRejectsWrongSizedKey(): void
     {
-        $this->expectException(CryptoException::class);
-        new Ed25519Signer('too short');
+        // act + assert
+        fact(static fn () => new Ed25519Signer('too short'))->throws(CryptoException::class);
     }
 }
