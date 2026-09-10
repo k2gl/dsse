@@ -36,7 +36,7 @@ final class EcdsaP256Test extends TestCase
 
         fact($envelope->verify($verifier))->is('the payload');
         // Raw r||s encoding for P-256 is exactly 64 bytes (DER would be variable-length).
-        fact(strlen($envelope->signatures[0]->sig))->is(64);
+        fact($envelope->signatures[0]->sig)->hasLength(64);
     }
 
     public function testVerifiesNativeDerSignature(): void
