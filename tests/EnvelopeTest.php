@@ -31,7 +31,7 @@ final class EnvelopeTest extends TestCase
 
         fact($envelope->payload)->is('hello world');
         fact($envelope->payloadType)->is('http://example.com/HelloWorld');
-        fact(count($envelope->signatures))->is(1);
+        fact($envelope->signatures)->count(1);
         fact($envelope->toJson())->is(self::EXAMPLE_JSON);
     }
 

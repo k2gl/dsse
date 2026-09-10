@@ -27,7 +27,7 @@ final class EcdsaP384Test extends TestCase
 
         fact($envelope->verify(EcdsaP384Verifier::fromPem($publicPem)))->is('the payload');
         // Raw r||s for P-384 is exactly 96 bytes.
-        fact(strlen($envelope->signatures[0]->sig))->is(96);
+        fact($envelope->signatures[0]->sig)->hasLength(96);
     }
 
     public function testVerifiesNativeDerSignature(): void

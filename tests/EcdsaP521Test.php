@@ -27,7 +27,7 @@ final class EcdsaP521Test extends TestCase
 
         fact($envelope->verify(EcdsaP521Verifier::fromPem($publicPem)))->is('the payload');
         // Raw r||s for P-521 is exactly 132 bytes (66 per coordinate).
-        fact(strlen($envelope->signatures[0]->sig))->is(132);
+        fact($envelope->signatures[0]->sig)->hasLength(132);
     }
 
     public function testVerifiesNativeDerSignature(): void
