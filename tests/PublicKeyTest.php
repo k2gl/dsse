@@ -13,6 +13,8 @@ use K2gl\Dsse\Internal\Der;
 use K2gl\Dsse\Internal\Jwk;
 use K2gl\Dsse\Internal\Spki;
 use K2gl\Dsse\PublicKey;
+use K2gl\Dsse\RsaPssSigner;
+use K2gl\Dsse\RsaPssVerifier;
 use K2gl\Dsse\RsaVerifier;
 use OpenSSLAsymmetricKey;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -25,6 +27,7 @@ use function K2gl\PHPUnitFluentAssertions\fact;
 #[CoversClass(Spki::class)]
 #[CoversClass(Jwk::class)]
 #[CoversClass(Der::class)]
+#[CoversClass(RsaPssVerifier::class)]
 #[CoversClass(CryptoException::class)]
 final class PublicKeyTest extends TestCase
 {
@@ -159,6 +162,26 @@ final class PublicKeyTest extends TestCase
         fact($key)->notFalse();
 
         return $key;
+    }
+
+    public function testFromJwkHonoursTheRsaAlg(): void
+    {
+        $key = self::generateRsa();
+        $details = openssl_pkey_get_details($key);
+        fact($details)->notFalse();
+        $jwk = ['kty' => 'RSA', 'n' => self::base64Url($details['rsa']['n']), 'e' => self::base64Url($details['rsa']['e'])];
+        openssl_pkey_export($key, $privatePem);
+        $pss = RsaPssSigner::fromPem((string) $privatePem, null, 'sha384')->sign('the message');
+        $pkcs1 = '';
+        openssl_sign('the message', $pkcs1, $key, OPENSSL_ALGO_SHA512);
+
+        fact(PublicKey::fromJwk($jwk))->instanceOf(RsaVerifier::class);
+        fact(PublicKey::fromJwk($jwk + ['alg' => 'PS384']))->instanceOf(RsaPssVerifier::class);
+        fact(PublicKey::fromJwk($jwk + ['alg' => 'PS384'])->verify('the message', $pss))->true();
+        fact(PublicKey::fromJwk($jwk + ['alg' => 'PS256'])->verify('the message', $pss))->false();
+        fact(PublicKey::fromJwk($jwk + ['alg' => 'RS512'])->verify('the message', $pkcs1))->true();
+        fact(PublicKey::fromJwk($jwk + ['alg' => 'RS256'])->verify('the message', $pkcs1))->false();
+        fact(static fn () => PublicKey::fromJwk($jwk + ['alg' => 'RSA-OAEP']))->throws(CryptoException::class);
     }
 
     private static function generateRsa(): OpenSSLAsymmetricKey

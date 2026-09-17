@@ -1,0 +1,17 @@
+{
+  "implementation": "securesystemslib",
+  "version": "1.5.1",
+  "scheme": "ed25519",
+  "keyid": "eaa96a38ee1522b8de98fffc0584b16917ebf2c180055f42e8116d325e7abd9e",
+  "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAbDJyI3LkLW1IxbMUdl80cAM/518Rrq095PSkN0Pmyqo=\n-----END PUBLIC KEY-----\n",
+  "envelope": {
+    "payload": "eyJfdHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9TdGF0ZW1lbnQvdjEiLCJzdWJqZWN0IjpbeyJuYW1lIjoiYXJ0aWZhY3QudGFyLmd6IiwiZGlnZXN0Ijp7InNoYTI1NiI6IjNmNWEyZDFlNmM3YjhhOWYwZTFkMmMzYjRhNTk2ODc3ODY5NWE0YjNjMmQxZTBmOWE4YjdjNmQ1ZTRmM2EyYjEifX1dLCJwcmVkaWNhdGVUeXBlIjoiaHR0cHM6Ly9rMmdsLmNvbS9kc3NlLWludGVyb3AvdjEiLCJwcmVkaWNhdGUiOnsibm90ZSI6ImNyb3NzLWltcGxlbWVudGF0aW9uIHZlY3RvciJ9fQ==",
+    "payloadType": "application/vnd.in-toto+json",
+    "signatures": [
+      {
+        "keyid": "eaa96a38ee1522b8de98fffc0584b16917ebf2c180055f42e8116d325e7abd9e",
+        "sig": "UuNYmGr51XZbXiCxDGeeqgN7J2XP7sU2b9j4mgNP4xxuQ4sTJIYswDY+7rzR1FyDXinw4j/M1HTYdt5gjqOJAQ=="
+      }
+    ]
+  }
+}

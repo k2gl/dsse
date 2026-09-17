@@ -1,0 +1,17 @@
+{
+  "implementation": "go-securesystemslib",
+  "version": "v0.11.1",
+  "scheme": "ecdsa-sha2-nistp521",
+  "keyid": "98e04b1f38ff67e2f9b62c1d761f392114b893f184d9c4b4cd67b106a5e8ec80",
+  "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMIGbMBAGByqGSM49AgEGBSuBBAAjA4GGAAQBSYqSVW5SQ2PJhhHcjZsEvE3A38o2\nysd2OHJa8tHD0T9dwJvyAVsANdTEo3+3mCVsIFXODpMOYdc/TUHvr2/Cy3wBIQL4\n9kgnlK+vjTKi9zv/ugheyC9fabI2ViFTBxjgtcLqleGlVmoqud+7VtZp1S239rNs\n7zwJtWHmNs7K7YOp3rU=\n-----END PUBLIC KEY-----\n",
+  "envelope": {
+    "payloadType": "application/vnd.in-toto+json",
+    "payload": "eyJfdHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9TdGF0ZW1lbnQvdjEiLCJzdWJqZWN0IjpbeyJuYW1lIjoiYXJ0aWZhY3QudGFyLmd6IiwiZGlnZXN0Ijp7InNoYTI1NiI6IjNmNWEyZDFlNmM3YjhhOWYwZTFkMmMzYjRhNTk2ODc3ODY5NWE0YjNjMmQxZTBmOWE4YjdjNmQ1ZTRmM2EyYjEifX1dLCJwcmVkaWNhdGVUeXBlIjoiaHR0cHM6Ly9rMmdsLmNvbS9kc3NlLWludGVyb3AvdjEiLCJwcmVkaWNhdGUiOnsibm90ZSI6ImNyb3NzLWltcGxlbWVudGF0aW9uIHZlY3RvciJ9fQ==",
+    "signatures": [
+      {
+        "keyid": "98e04b1f38ff67e2f9b62c1d761f392114b893f184d9c4b4cd67b106a5e8ec80",
+        "sig": "MIGIAkIB9O4eOOO1RxOVgqGjjDWq2QiMj+9MsUDKGLqqqQsYNxf6GFuwIjXhaDoIJtJhug3PmaAbtNvjknS3W/QBtJHUWN8CQgHgSVeVc3SGNdv2I7vfWrc/OI4vyYdW6wHLOVMFXp8sVBAf2wRMcqDgp4SW+RSnA5msY4NawESfAEWRMP9/xiIUCg=="
+      }
+    ]
+  }
+}

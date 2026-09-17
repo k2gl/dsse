@@ -43,3 +43,51 @@ jobs:
             echo "::error::Tests must use fluent fact()/throws(), not native PHPUnit assertions."
             exit 1
           fi
+
+  interop:
+    runs-on: ubuntu-latest
+    name: Interop (Go + Python)
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2.37.2
+        with:
+          php-version: '8.4'
+          extensions: openssl, sodium
+          coverage: none
+          tools: composer:v2
+
+      - name: Setup Go
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: tests/interop/go/go.mod
+          cache-dependency-path: tests/interop/go/go.sum
+
+      - name: Setup Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          composer install --no-progress --prefer-dist --optimize-autoloader
+          pip install -r tests/interop/python/requirements.txt
+
+      - name: Envelopes from the Go and Python reference implementations
+        run: |
+          (cd tests/interop/go && go run . generate ../keys /tmp/interop/upstream)
+          python tests/interop/python/interop.py generate tests/interop/keys /tmp/interop/upstream
+
+      - name: PHP verifies them
+        run: DSSE_INTEROP_DIR=/tmp/interop/upstream vendor/bin/phpunit --filter InteropTest
+
+      - name: Envelopes from PHP
+        run: php tests/interop/php/generate.php /tmp/interop/php
+
+      - name: Go and Python verify them
+        run: |
+          (cd tests/interop/go && go run . verify /tmp/interop/php)
+          python tests/interop/python/interop.py verify /tmp/interop/php

@@ -1,0 +1,17 @@
+{
+  "implementation": "go-securesystemslib",
+  "version": "v0.11.1",
+  "scheme": "rsassa-pss-sha256",
+  "keyid": "55010b9c149b64b24205acf6b51936ad1faa248762e2407deb6eea2984e3c1d1",
+  "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAx7rnGEbYHiOMSyZO/wCZ\nZh7aeJA/xTTXZ/Ju8jxSp43nznCmKlldJ9aIRQhaknEdcCRviLI5r7xUdSdPLq8s\nDiYeduM7zWMfIQbmDoFYzsI2n/21LoE34q7UbJnJ+7XndMA5Q2OwXQwcg3ep/KHm\nUabyzNi/STENjjQaDLR6ThxoSlNRISJ3tWnHayWbF4/58em93ZHwTOh/TrvL417q\nO6umRt12sxbA/zjc6bHeCdjJKCXyguqRQnM/OXOU6P87t1Ept3spRLs+sThwl7UO\ngNbHNmv4z3YMtGbRruREIOu9b+J/1vwAvfmoGCv5jPdcdPa7T3HcjPNDklDi+bvP\nnQIDAQAB\n-----END PUBLIC KEY-----\n",
+  "envelope": {
+    "payloadType": "application/vnd.in-toto+json",
+    "payload": "eyJfdHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9TdGF0ZW1lbnQvdjEiLCJzdWJqZWN0IjpbeyJuYW1lIjoiYXJ0aWZhY3QudGFyLmd6IiwiZGlnZXN0Ijp7InNoYTI1NiI6IjNmNWEyZDFlNmM3YjhhOWYwZTFkMmMzYjRhNTk2ODc3ODY5NWE0YjNjMmQxZTBmOWE4YjdjNmQ1ZTRmM2EyYjEifX1dLCJwcmVkaWNhdGVUeXBlIjoiaHR0cHM6Ly9rMmdsLmNvbS9kc3NlLWludGVyb3AvdjEiLCJwcmVkaWNhdGUiOnsibm90ZSI6ImNyb3NzLWltcGxlbWVudGF0aW9uIHZlY3RvciJ9fQ==",
+    "signatures": [
+      {
+        "keyid": "55010b9c149b64b24205acf6b51936ad1faa248762e2407deb6eea2984e3c1d1",
+        "sig": "qHcZK9bFOrY+N+l18A4dCkFLTDfF+Y01yzG9Bxq0e5FcQsXhUT7p0BGRQkVOHDEqd6TW90U1bQsTlltd4WFiCiRD7TVW4poRtzju575qNH92iH5f4jhD+VnHG6ORz6G2rFi5ebB2uJyus8DfPp/Jbu3UD7QTIZz24ko8rNv3IWJ98zTmNsbFtk6djqueaZ504cgYLQvSMeENo96EOl7G/1sd/0FFQBuTQ7G8HfWF/WMbI7RZEGaZrMiV2YUktBF79NcN0HRM3HcTYypxmukBUmLcqtw+Q9V5g9WSe6LERvHpTUnswOz8bhRGI9dmt8UcpjnpsfyUGZdcFd6+/C2wEw=="
+      }
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "implementation": "go-securesystemslib",
+  "version": "v0.11.1",
+  "scheme": "ed25519",
+  "keyid": "152952eaec5ecf45e223adef653177759a3d02c90b6ad908383aeaf32ff8ae28",
+  "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAbDJyI3LkLW1IxbMUdl80cAM/518Rrq095PSkN0Pmyqo=\n-----END PUBLIC KEY-----\n",
+  "envelope": {
+    "payloadType": "application/vnd.in-toto+json",
+    "payload": "eyJfdHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9TdGF0ZW1lbnQvdjEiLCJzdWJqZWN0IjpbeyJuYW1lIjoiYXJ0aWZhY3QudGFyLmd6IiwiZGlnZXN0Ijp7InNoYTI1NiI6IjNmNWEyZDFlNmM3YjhhOWYwZTFkMmMzYjRhNTk2ODc3ODY5NWE0YjNjMmQxZTBmOWE4YjdjNmQ1ZTRmM2EyYjEifX1dLCJwcmVkaWNhdGVUeXBlIjoiaHR0cHM6Ly9rMmdsLmNvbS9kc3NlLWludGVyb3AvdjEiLCJwcmVkaWNhdGUiOnsibm90ZSI6ImNyb3NzLWltcGxlbWVudGF0aW9uIHZlY3RvciJ9fQ==",
+    "signatures": [
+      {
+        "keyid": "152952eaec5ecf45e223adef653177759a3d02c90b6ad908383aeaf32ff8ae28",
+        "sig": "UuNYmGr51XZbXiCxDGeeqgN7J2XP7sU2b9j4mgNP4xxuQ4sTJIYswDY+7rzR1FyDXinw4j/M1HTYdt5gjqOJAQ=="
+      }
+    ]
+  }
+}

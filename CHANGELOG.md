@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.4.0
+
+- **Cross-implementation vectors.** Envelopes signed by go-securesystemslib and by
+  securesystemslib (Python) — ECDSA P-256/384/521, Ed25519, RSASSA-PSS, and PKCS#1 v1.5
+  from Python — are verified in the test suite, and CI regenerates them with the upstream
+  code and has Go and Python verify envelopes from every bundled signer in return. The
+  follow-up promised in 1.0.0.
+- **RSASSA-PSS**: `RsaPssSigner` / `RsaPssVerifier` (SHA-256/384/512, MGF1, salt as long
+  as the hash), the RSA scheme both reference implementations use. ext-openssl has no PSS
+  padding, so the RSA primitive is run bare and EMSA-PSS is done in PHP — still no
+  dependencies.
+- **DER output for ECDSA signers**: `SignatureEncoding::Der` on `fromPem()`, because the
+  reference implementations verify DER only. Raw `r||s` stays the default; the verifiers
+  keep accepting both.
+- `PublicKey::fromJwk()` honours an RSA JWK's `alg`: `RS384`/`RS512` pick the hash,
+  `PS256`/`PS384`/`PS512` pick PSS; an `alg` that is not a signature algorithm is refused.
+
 ## 1.3.0
 
 - Add `PublicKey::fromPem()` and `PublicKey::fromJwk()` — load a public key and get the
