@@ -1,0 +1,17 @@
+{
+  "implementation": "securesystemslib",
+  "version": "1.5.1",
+  "scheme": "ecdsa-sha2-nistp256",
+  "keyid": "7a3e16ce061344af6bbe145cec43ee3f1aa8c8314389593659034bdb40ed8321",
+  "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE2VpGyZqflk+SOleloPv6FxEePCn/\nRVuiF3UPT79xH+sE24NctIBXwq2ZxWNnRk/VQtWgyHbfQfDKM/nbwWGZwQ==\n-----END PUBLIC KEY-----\n",
+  "envelope": {
+    "payload": "eyJfdHlwZSI6Imh0dHBzOi8vaW4tdG90by5pby9TdGF0ZW1lbnQvdjEiLCJzdWJqZWN0IjpbeyJuYW1lIjoiYXJ0aWZhY3QudGFyLmd6IiwiZGlnZXN0Ijp7InNoYTI1NiI6IjNmNWEyZDFlNmM3YjhhOWYwZTFkMmMzYjRhNTk2ODc3ODY5NWE0YjNjMmQxZTBmOWE4YjdjNmQ1ZTRmM2EyYjEifX1dLCJwcmVkaWNhdGVUeXBlIjoiaHR0cHM6Ly9rMmdsLmNvbS9kc3NlLWludGVyb3AvdjEiLCJwcmVkaWNhdGUiOnsibm90ZSI6ImNyb3NzLWltcGxlbWVudGF0aW9uIHZlY3RvciJ9fQ==",
+    "payloadType": "application/vnd.in-toto+json",
+    "signatures": [
+      {
+        "keyid": "7a3e16ce061344af6bbe145cec43ee3f1aa8c8314389593659034bdb40ed8321",
+        "sig": "MEYCIQD+GxIrlvz9iLQzkZnt4ckiTFYi+IcgYJpTjxDz2jiqggIhAPyE7QMr9gELvxfx0jlsolSpy70tcHu2NHnSuQUY7ZsX"
+      }
+    ]
+  }
+}

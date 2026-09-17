@@ -7,6 +7,7 @@ namespace K2gl\Dsse\Tests;
 use K2gl\Dsse\EcdsaP256Signer;
 use K2gl\Dsse\EcdsaP256Verifier;
 use K2gl\Dsse\Envelope;
+use K2gl\Dsse\SignatureEncoding;
 use K2gl\Dsse\Exception\CryptoException;
 use K2gl\Dsse\Exception\SignatureVerificationFailed;
 use K2gl\Dsse\Internal\Asn1EcdsaSignature;
@@ -90,6 +91,19 @@ final class EcdsaP256Test extends TestCase
     {
         // act + assert
         fact(static fn () => EcdsaP256Signer::fromPem('not a valid pem'))->throws(CryptoException::class);
+    }
+
+    public function testCanEmitDerForConsumersThatVerifyOnlyThat(): void
+    {
+        [$privatePem, $publicPem] = $this->generateKeyPair();
+        $signer = EcdsaP256Signer::fromPem($privatePem, encoding: SignatureEncoding::Der);
+
+        $signature = $signer->sign('the message');
+
+        fact($signature[0])->is("\x30"); // an ASN.1 SEQUENCE, not 64 raw bytes
+        fact(strlen($signature))->not(64);
+        fact(EcdsaP256Verifier::fromPem($publicPem)->verify('the message', $signature))->true();
+        fact(openssl_verify('the message', $signature, $publicPem, OPENSSL_ALGO_SHA256))->is(1);
     }
 
     /** @return array{0: string, 1: string} */

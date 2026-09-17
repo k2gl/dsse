@@ -10,7 +10,7 @@ use OpenSSLAsymmetricKey;
 
 /**
  * {@see Signer} backed by ECDSA over NIST P-384 (secp384r1) with SHA-384, using
- * ext-openssl. Signatures are emitted in the raw r||s form (96 bytes) that
+ * ext-openssl. By default signatures are emitted in the raw r||s form (96 bytes) that
  * DSSE/JOSE/WebCrypto and Sigstore use, not OpenSSL's native DER.
  */
 final class EcdsaP384Signer implements Signer
@@ -18,10 +18,14 @@ final class EcdsaP384Signer implements Signer
     private function __construct(
         private readonly OpenSSLAsymmetricKey $privateKey,
         private readonly ?string $keyId,
+        private readonly SignatureEncoding $encoding,
     ) {}
 
-    /** Load an EC P-384 private key from a PEM string. */
-    public static function fromPem(string $pem, ?string $keyId = null): self
+    /**
+     * Load an EC P-384 private key from a PEM string. Signatures come out as
+     * raw `r||s` unless `$encoding` asks for ASN.1 DER.
+     */
+    public static function fromPem(string $pem, ?string $keyId = null, SignatureEncoding $encoding = SignatureEncoding::Raw): self
     {
         $key = openssl_pkey_get_private($pem);
 
@@ -29,7 +33,7 @@ final class EcdsaP384Signer implements Signer
             throw new CryptoException('Unable to load EC private key: ' . self::lastError());
         }
 
-        return new self($key, $keyId);
+        return new self($key, $keyId, $encoding);
     }
 
     public function sign(string $message): string
@@ -40,7 +44,7 @@ final class EcdsaP384Signer implements Signer
             throw new CryptoException('ECDSA signing failed: ' . self::lastError());
         }
 
-        return Asn1EcdsaSignature::derToRaw($der, 48);
+        return $this->encoding === SignatureEncoding::Der ? $der : Asn1EcdsaSignature::derToRaw($der, 48);
     }
 
     public function keyId(): ?string

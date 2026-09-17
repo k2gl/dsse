@@ -9,6 +9,7 @@ use K2gl\Dsse\EcdsaP384Verifier;
 use K2gl\Dsse\EcdsaP521Verifier;
 use K2gl\Dsse\Ed25519Verifier;
 use K2gl\Dsse\Exception\CryptoException;
+use K2gl\Dsse\RsaPssVerifier;
 use K2gl\Dsse\RsaVerifier;
 use K2gl\Dsse\Verifier;
 
@@ -89,14 +90,31 @@ final class Jwk
     }
 
     /**
+     * An RSA JWK verifies PKCS#1 v1.5 over SHA-256 unless its `alg` says
+     * otherwise: `RS384`/`RS512` pick the hash, `PS256`/`PS384`/`PS512` pick PSS.
+     *
      * @param array<string, mixed> $jwk
      */
-    private static function rsa(array $jwk): RsaVerifier
+    private static function rsa(array $jwk): Verifier
     {
-        return RsaVerifier::fromPem(Spki::rsaPem(
+        $pem = Spki::rsaPem(
             self::base64Url(self::member($jwk, 'n')),
             self::base64Url(self::member($jwk, 'e')),
-        ));
+        );
+        $alg = $jwk['alg'] ?? null;
+
+        return match ($alg) {
+            null, 'RS256' => RsaVerifier::fromPem($pem),
+            'RS384' => RsaVerifier::fromPem($pem, 'sha384'),
+            'RS512' => RsaVerifier::fromPem($pem, 'sha512'),
+            'PS256' => RsaPssVerifier::fromPem($pem),
+            'PS384' => RsaPssVerifier::fromPem($pem, 'sha384'),
+            'PS512' => RsaPssVerifier::fromPem($pem, 'sha512'),
+            default => throw new CryptoException(sprintf(
+                'Unsupported RSA JWK "alg" %s: expected RS256/384/512 or PS256/384/512.',
+                is_string($alg) ? '"' . $alg . '"' : 'value',
+            )),
+        };
     }
 
     /**

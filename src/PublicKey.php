@@ -14,8 +14,10 @@ use K2gl\Dsse\Internal\Spki;
  * algorithm (and EC curve) automatically — so you can hand a verifier a key from
  * a PEM file or a JWKS endpoint without knowing its type up front.
  *
- * RSA keys carry no hash in the key material, so they default to SHA-256; use
- * {@see RsaVerifier::fromPem()} directly for SHA-384/512.
+ * RSA keys carry no hash or padding in the key material, so a PEM defaults to
+ * PKCS#1 v1.5 over SHA-256 — use {@see RsaVerifier::fromPem()} for another hash
+ * or {@see RsaPssVerifier} for PSS. A JWK says what it is for in `alg`, and
+ * that is honoured (`RS256`…`RS512`, `PS256`…`PS512`).
  */
 final class PublicKey
 {
@@ -60,7 +62,7 @@ final class PublicKey
 
     /**
      * Load a public key from a JWK (RFC 7517). Supports `EC` (P-256/384/521),
-     * `RSA`, and `OKP` (Ed25519).
+     * `RSA` (PKCS#1 v1.5 or, with a `PS*` alg, PSS), and `OKP` (Ed25519).
      *
      * @param array<string, mixed> $jwk
      */

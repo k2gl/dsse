@@ -104,9 +104,25 @@ $verifier = EcdsaP384Verifier::fromPem($p384PublicKeyPem);
 // RSASSA-PKCS1-v1_5; hash algorithm defaults to sha256 (sha384/sha512 also supported)
 $rsaSigner   = RsaSigner::fromPem($rsaPrivateKeyPem, hashAlgorithm: 'sha512');
 $rsaVerifier = RsaVerifier::fromPem($rsaPublicKeyPem, hashAlgorithm: 'sha512');
+
+// RSASSA-PSS (MGF1, salt as long as the hash) — what the Go and Python reference
+// implementations sign with; same hash choices
+$pssSigner   = RsaPssSigner::fromPem($rsaPrivateKeyPem);
+$pssVerifier = RsaPssVerifier::fromPem($rsaPublicKeyPem);
 ```
 
-`EcdsaP521Signer` / `EcdsaP521Verifier` work identically.
+`EcdsaP521Signer` / `EcdsaP521Verifier` work identically. ext-openssl has no PSS
+padding, so `RsaPssSigner` / `RsaPssVerifier` run the RSA primitive bare and do
+EMSA-PSS (RFC 8017) themselves — no extra dependency.
+
+The ECDSA signers write raw `r||s` by default; ask for DER when the consumer is one
+of the reference implementations, which verify only that:
+
+```php
+use K2gl\Dsse\SignatureEncoding;
+
+$signer = EcdsaP256Signer::fromPem($privateKeyPem, encoding: SignatureEncoding::Der);
+```
 
 ### Loading a key without knowing its algorithm
 
@@ -123,8 +139,10 @@ $verifier = PublicKey::fromJwk($jwk);          // EC / RSA / OKP (Ed25519)
 $payload = $envelope->verify($verifier);
 ```
 
-RSA keys carry no hash, so these verify with SHA-256; for another hash use
-`RsaVerifier::fromPem($pem, hashAlgorithm: 'sha512')` directly.
+An RSA PEM carries neither hash nor padding, so it verifies PKCS#1 v1.5 over SHA-256;
+for another hash use `RsaVerifier::fromPem($pem, hashAlgorithm: 'sha512')`, for PSS
+`RsaPssVerifier`. An RSA JWK usually says in `alg` what it is for, and that is honoured:
+`RS256`/`RS384`/`RS512` pick the hash, `PS256`/`PS384`/`PS512` pick PSS.
 
 `KeyId` computes the two identifiers commonly used for a signature's `keyId`:
 
@@ -149,15 +167,31 @@ final class KmsSigner implements Signer
 }
 ```
 
+## Interoperability
+
+Envelopes made by the two reference implementations —
+[go-securesystemslib](https://github.com/secure-systems-lab/go-securesystemslib) and
+[securesystemslib](https://github.com/secure-systems-lab/securesystemslib) (Python) — are
+part of the test suite, one per scheme: ECDSA P-256/384/521, Ed25519, RSASSA-PSS and, from
+Python, RSASSA-PKCS1-v1_5. The vectors under `tests/fixtures/interop` were produced by
+the generators in `tests/interop`, and CI regenerates them with the upstream code on every
+run and checks the other direction too: envelopes from every bundled signer are verified
+by Go and by Python.
+
+Two things the vectors settled. The reference implementations sign RSA with **PSS**
+(Go has nothing else), hence `RsaPssSigner` / `RsaPssVerifier`. And they verify ECDSA
+signatures in **DER** only, hence `SignatureEncoding::Der` on the ECDSA signers; the
+verifiers here take either form.
+
 ## Design
 
 - **Crypto-agnostic core.** `Pae` and `Envelope` carry no cryptography; signing is
   delegated to `Signer` / `Verifier`, so you control the algorithm and key storage.
-- **Raw signatures.** The bundled ECDSA signers emit raw `r||s` signatures (64/96/132 bytes for P-256/384/521)
-  (the form DSSE/JOSE/WebCrypto/Sigstore use), converting to and from OpenSSL's DER
-  internally. The verifier accepts both raw `r||s` and ASN.1 DER signatures,
-  detecting the encoding automatically — so DER signatures (OpenSSL native, Sigstore
-  bundles) verify without any extra wiring.
+- **Raw signatures by default.** The bundled ECDSA signers emit raw `r||s` signatures
+  (64/96/132 bytes for P-256/384/521), the form JOSE and WebCrypto use, converting from
+  OpenSSL's DER internally; `SignatureEncoding::Der` keeps the DER for consumers that
+  want it (Sigstore bundles, the Go and Python reference implementations). The
+  verifiers accept both, detecting the encoding automatically.
 - **Strict and typed.** `declare(strict_types=1)` throughout, analysed at PHPStan
   level 9; every exception implements `DsseException`.
 

@@ -11,8 +11,8 @@ use OpenSSLAsymmetricKey;
  * {@see Verifier} for RSASSA-PKCS1-v1_5 with SHA-256/384/512, using ext-openssl.
  * The hash algorithm must match the one used to sign (default SHA-256).
  *
- * RSASSA-PSS is intentionally not supported here (ext-openssl's openssl_verify
- * only does PKCS#1 v1.5 padding).
+ * For RSASSA-PSS — what the Go and Python reference implementations use — see
+ * {@see RsaPssVerifier}.
  */
 final class RsaVerifier implements Verifier
 {

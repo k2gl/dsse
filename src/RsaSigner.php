@@ -11,8 +11,8 @@ use OpenSSLAsymmetricKey;
  * {@see Signer} backed by RSASSA-PKCS1-v1_5 with SHA-256/384/512, using
  * ext-openssl. Emits the signature in its native wire form (no r||s recoding).
  *
- * RSASSA-PSS is intentionally not supported here (ext-openssl's openssl_sign
- * only does PKCS#1 v1.5 padding).
+ * For RSASSA-PSS — what the Go and Python reference implementations use — see
+ * {@see RsaPssSigner}.
  */
 final class RsaSigner implements Signer
 {
